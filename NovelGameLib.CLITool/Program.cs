@@ -13,7 +13,7 @@ namespace NovelGameLib.CLITool
         {
             string line;
 
-            Console.WriteLine($" || NovelGameLib CLI v{VERSION} ||");
+            Console.WriteLine($" || NovelGameLib CLI v{VERSION:f1} ||");
             Console.WriteLine("タイトルを入力し、ゲームを検索");
             Console.WriteLine("exit でアプリケーションを終了");
 
