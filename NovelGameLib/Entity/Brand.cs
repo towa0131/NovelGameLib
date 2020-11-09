@@ -1,4 +1,4 @@
-﻿namespace NovelGameLib
+﻿namespace NovelGameLib.Entity
 {
     public class Brand
     {

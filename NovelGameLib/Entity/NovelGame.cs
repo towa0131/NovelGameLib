@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NovelGameLib
+namespace NovelGameLib.Entity
 {
     public class NovelGame
     {

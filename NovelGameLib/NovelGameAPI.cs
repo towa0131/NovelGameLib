@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using SqlKata;
 using AngleSharp.Html.Dom;
 using AngleSharp.Dom;
+using NovelGameLib.Entity;
 
 namespace NovelGameLib
 {
