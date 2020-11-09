@@ -6,11 +6,30 @@ namespace NovelGameLib
 {
     public class NovelGame
     {
-        public string Title { get; set; }
+        public int? Id { get; set; }
 
-        public string Brand { get; set; }
+        public string? Title { get; set; }
 
-        public DateTime Release { get; set; }
+        public string? Kana { get; set; }
 
+        public DateTime? SellDay { get; set; }
+
+        public int? BrandId { get; set; }
+
+        public int? Median { get; set; }
+
+        public int? Stdev { get; set; }
+
+        public int? Getchu { get; set; } 
+
+        public string? OHP { get; set; }
+
+        public string? Model { get; set; }
+
+        public bool? Rating { get; set; }
+
+        public int? Gyutto { get; set; }
+
+        public string? Fanza { get; set; }
     }
 }

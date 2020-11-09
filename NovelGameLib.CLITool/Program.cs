@@ -28,16 +28,34 @@ namespace NovelGameLib.CLITool
                     break;
                 }
 
-                List<NovelGame> list = await NovelAPI.SearchByName(line);
+                List<NovelGame> games = await NovelGameAPI.SearchGames(line);
 
-                foreach (NovelGame game in list)
+                foreach (NovelGame game in games)
                 {
+                    Console.WriteLine($" - {game.Title} ({game.Kana})");
+                    Console.WriteLine($"  ID : {game.Id}");
+                    Console.WriteLine($"  Release : {game.SellDay?.ToString("yyyy/MM/dd")}");
+                    if (game.BrandId != null)
+                    {
+                        Brand brand = await NovelGameAPI.SearchBrandById(game.BrandId.Value);
+                        if (brand != null)
+                        {
+                            Console.WriteLine($"  Brand : {brand.Name} ({brand.Kana})");
+                            Console.WriteLine($"   ID : {brand.Id}");
+                            Console.WriteLine($"   URL : {brand.Url}");
+                            Console.WriteLine($"   Twitter : {brand.Twitter}");
+                        }
+                    }
+                    Console.WriteLine($"  HP : {game.OHP}");
+                    Console.WriteLine($"  Brand ID : {game.BrandId}");
+                    Console.WriteLine($"  Getchu : {game.Getchu}");
+                    Console.WriteLine($"  Model : {game.Model}");
+                    Console.WriteLine($"  Rating : {game.Rating}");
+                    Console.WriteLine($"  Gyutto : {game.Gyutto}");
+                    Console.WriteLine($"  Fanza : {game.Fanza}");
                     Console.WriteLine("");
-                    Console.WriteLine($"* {game.Title}");
-                    Console.WriteLine($" - ブランド : {game.Brand}");
-                    Console.WriteLine($" - 発売日 : {game.Release.ToString("yyyy/MM/dd")}");
                 }
-                Console.WriteLine("");
+
             }
         }
     }
