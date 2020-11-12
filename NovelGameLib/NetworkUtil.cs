@@ -9,7 +9,7 @@ using AngleSharp.Html.Dom;
 
 namespace NovelGameLib
 {
-    class NetworkUtil
+    static class NetworkUtil
     {
         public async static Task<IHtmlDocument> PostQuery(Query query, string uri)
         {
