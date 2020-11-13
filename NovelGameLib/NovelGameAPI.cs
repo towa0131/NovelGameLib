@@ -13,7 +13,12 @@ namespace NovelGameLib
     {
         public const string POST_URL = "https://erogamescape.dyndns.org/~ap2/ero/toukei_kaiseki/sql_for_erogamer_form.php";
 
-        public async static Task<List<Brand>> GetAllBrands()
+        public NovelGameAPI()
+        {
+            // Cache
+        }
+
+        public async Task<List<Brand>> GetAllBrands()
         {
             var document = await NetworkUtil.PostQuery(new Query().From("brandlist"), POST_URL);
 
@@ -22,7 +27,7 @@ namespace NovelGameLib
             return brands;
         }
 
-        public async static Task<Brand?> SearchBrandByName(string name)
+        public async Task<Brand?> SearchBrandByName(string name)
         {
             Query query = new Query()
                         .From("brandlist")
@@ -36,7 +41,7 @@ namespace NovelGameLib
             else return brands.First();
         }
 
-        public async static Task<Brand?> SearchBrandById(int id)
+        public async Task<Brand?> SearchBrandById(int id)
         {
             Query query = new Query()
                         .From("brandlist")
@@ -49,7 +54,7 @@ namespace NovelGameLib
             else return brands.First();
         }
 
-        public async static Task<List<Brand>> SearchBrands(string name)
+        public async Task<List<Brand>> SearchBrands(string name)
         {
             Query query = new Query()
                         .From("brandlist")
@@ -62,7 +67,7 @@ namespace NovelGameLib
             return brands;
         }
 
-        public async static Task<List<NovelGame>> GetAllGames()
+        public async Task<List<NovelGame>> GetAllGames()
         {
             var document = await NetworkUtil.PostQuery(new Query().From("gamelist"), POST_URL);
 
@@ -71,7 +76,7 @@ namespace NovelGameLib
             return games;
         }
 
-        public async static Task<NovelGame?> SearchGameByName(string name)
+        public async Task<NovelGame?> SearchGameByName(string name)
         {
             Query query = new Query()
                         .From("gamelist")
@@ -85,7 +90,7 @@ namespace NovelGameLib
             else return games.First();
         }
 
-        public async static Task<NovelGame?> SearchGameById(int id)
+        public async Task<NovelGame?> SearchGameById(int id)
         {
             Query query = new Query()
                         .From("gamelist")
@@ -98,7 +103,7 @@ namespace NovelGameLib
             else return games.First();
         }
 
-        public async static Task<List<NovelGame>> SearchGames(string name)
+        public async Task<List<NovelGame>> SearchGames(string name)
         {
             Query query = new Query()
                         .From("gamelist")
@@ -111,7 +116,7 @@ namespace NovelGameLib
             return games;
         }
 
-        private static List<Brand> ReadBrandTable(IHtmlDocument document)
+        private List<Brand> ReadBrandTable(IHtmlDocument document)
         {
             var brands = document.QuerySelectorAll("tr")
                 .Skip(1)
@@ -140,7 +145,7 @@ namespace NovelGameLib
             return brands.ToList();
         }
 
-        private static List<NovelGame> ReadGameTable(IHtmlDocument document)
+        private List<NovelGame> ReadGameTable(IHtmlDocument document)
         {
             var games = document.QuerySelectorAll("tr")
                 .Skip(1)
@@ -171,7 +176,7 @@ namespace NovelGameLib
             return games.ToList();
         }
 
-        private static int? ParseInt(IElement element)
+        private int? ParseInt(IElement element)
         {
             int result;
 
@@ -183,7 +188,7 @@ namespace NovelGameLib
             return result;
         }
 
-        private static bool ParseBool(IElement flag)
+        private bool ParseBool(IElement flag)
         {
             if (flag.TextContent == "f") return false;
             else return true;

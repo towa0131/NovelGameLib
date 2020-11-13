@@ -28,7 +28,8 @@ namespace NovelGameLib.CLITool
                     break;
                 }
 
-                List<NovelGame> games = await NovelGameAPI.SearchGames(line);
+                NovelGameAPI api = new NovelGameAPI();
+                List<NovelGame> games = await api.SearchGames(line);
 
                 foreach (NovelGame game in games)
                 {
@@ -37,7 +38,7 @@ namespace NovelGameLib.CLITool
                     Console.WriteLine($"  Release : {game.SellDay?.ToString("yyyy/MM/dd")}");
                     if (game.BrandId != null)
                     {
-                        Brand brand = await NovelGameAPI.SearchBrandById(game.BrandId.Value);
+                        Brand brand = await api.SearchBrandById(game.BrandId.Value);
                         if (brand != null)
                         {
                             Console.WriteLine($"  Brand : {brand.Name} ({brand.Kana})");
