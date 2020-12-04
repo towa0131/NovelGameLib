@@ -7,8 +7,6 @@ using AngleSharp.Html.Dom;
 using AngleSharp.Dom;
 using NovelGameLib.Entity;
 
-using System.Diagnostics;
-
 namespace NovelGameLib
 {
     public class NovelGameAPI
