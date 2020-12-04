@@ -7,19 +7,35 @@ using AngleSharp.Html.Dom;
 using AngleSharp.Dom;
 using NovelGameLib.Entity;
 
+using System.Diagnostics;
+
 namespace NovelGameLib
 {
     public class NovelGameAPI
     {
         public const string POST_URL = "https://erogamescape.dyndns.org/~ap2/ero/toukei_kaiseki/sql_for_erogamer_form.php";
 
+        private GameCache Cache { get; set; } = new GameCache();
+
         public NovelGameAPI()
         {
-            // Cache
+            this.SetCache();
+        }
+
+        private async void SetCache()
+        {
+            this.Cache.AddBrands(await this.GetAllBrands());
+            this.Cache.AddGames(await this.GetAllGames());
+            this.Cache.isLoaded = true;
         }
 
         public async Task<List<Brand>> GetAllBrands()
         {
+            if (this.Cache.isLoaded)
+            {
+                return this.Cache.GetAllBrands();
+            }
+
             var document = await NetworkUtil.PostQuery(new Query().From("brandlist"), POST_URL);
 
             List<Brand> brands = ReadBrandTable(document);
@@ -29,13 +45,22 @@ namespace NovelGameLib
 
         public async Task<Brand?> SearchBrandByName(string name)
         {
-            Query query = new Query()
-                        .From("brandlist")
-                        .Where("brandname", name)
-                        .OrWhere("brandfurigana", name);
-            var document = await NetworkUtil.PostQuery(query, POST_URL);
+            List<Brand> brands = new List<Brand>();
 
-            List<Brand> brands = ReadBrandTable(document);
+            if (this.Cache.isLoaded)
+            {
+                brands = this.Cache.FindBrandsByName(name);
+            }
+            else
+            {
+                Query query = new Query()
+                            .From("brandlist")
+                            .Where("brandname", name)
+                            .OrWhere("brandfurigana", name);
+                var document = await NetworkUtil.PostQuery(query, POST_URL);
+
+                brands = ReadBrandTable(document);
+            }
 
             if (brands.Count() == 0) return null;
             else return brands.First();
@@ -43,12 +68,21 @@ namespace NovelGameLib
 
         public async Task<Brand?> SearchBrandById(int id)
         {
-            Query query = new Query()
-                        .From("brandlist")
-                        .Where("id", id);
-            var document = await NetworkUtil.PostQuery(query, POST_URL);
+            List<Brand> brands = new List<Brand>();
 
-            List<Brand> brands = ReadBrandTable(document);
+            if (this.Cache.isLoaded)
+            {
+                brands = this.Cache.FindBrands(id);
+            }
+            else
+            {
+                Query query = new Query()
+                            .From("brandlist")
+                            .Where("id", id);
+                var document = await NetworkUtil.PostQuery(query, POST_URL);
+
+                brands = ReadBrandTable(document);
+            }
 
             if (brands.Count() == 0) return null;
             else return brands.First();
@@ -56,19 +90,33 @@ namespace NovelGameLib
 
         public async Task<List<Brand>> SearchBrands(string name)
         {
-            Query query = new Query()
+            List<Brand> brands = new List<Brand>();
+
+            if (this.Cache.isLoaded)
+            {
+                brands = this.Cache.FindBrandsByName(name, true);
+            }
+            else
+            {
+                Query query = new Query()
                         .From("brandlist")
                         .WhereLike("brandname", $"%{name}%")
                         .OrWhereLike("brandfurigana", $"%{name}%");
-            var document = await NetworkUtil.PostQuery(query, POST_URL);
+                var document = await NetworkUtil.PostQuery(query, POST_URL);
 
-            List<Brand> brands = ReadBrandTable(document);
+                brands = ReadBrandTable(document);
+            }
 
             return brands;
         }
 
         public async Task<List<NovelGame>> GetAllGames()
         {
+            if (this.Cache.isLoaded)
+            {
+                return this.Cache.GetAllGames();
+            }
+
             var document = await NetworkUtil.PostQuery(new Query().From("gamelist"), POST_URL);
 
             List<NovelGame> games = ReadGameTable(document);
@@ -78,13 +126,22 @@ namespace NovelGameLib
 
         public async Task<NovelGame?> SearchGameByName(string name)
         {
-            Query query = new Query()
-                        .From("gamelist")
-                        .Where("gamename", name)
-                        .OrWhere("furigana", name);
-            var document = await NetworkUtil.PostQuery(query, POST_URL);
+            List<NovelGame> games = new List<NovelGame>();
 
-            List<NovelGame> games = ReadGameTable(document);
+            if (this.Cache.isLoaded)
+            {
+                games = this.Cache.FindGamesByName(name);
+            }
+            else
+            {
+                Query query = new Query()
+                            .From("gamelist")
+                            .Where("gamename", name)
+                            .OrWhere("furigana", name);
+                var document = await NetworkUtil.PostQuery(query, POST_URL);
+
+                games = ReadGameTable(document);
+            }
 
             if (games.Count() == 0) return null;
             else return games.First();
@@ -92,12 +149,21 @@ namespace NovelGameLib
 
         public async Task<NovelGame?> SearchGameById(int id)
         {
-            Query query = new Query()
-                        .From("gamelist")
-                        .Where("id", id);
-            var document = await NetworkUtil.PostQuery(query, POST_URL);
+            List<NovelGame> games = new List<NovelGame>();
 
-            List<NovelGame> games = ReadGameTable(document);
+            if (this.Cache.isLoaded)
+            {
+                games = this.Cache.FindGames(id);
+            }
+            else
+            {
+                Query query = new Query()
+                            .From("gamelist")
+                            .Where("id", id);
+                var document = await NetworkUtil.PostQuery(query, POST_URL);
+
+                games = ReadGameTable(document);
+            }
 
             if (games.Count() == 0) return null;
             else return games.First();
@@ -105,13 +171,22 @@ namespace NovelGameLib
 
         public async Task<List<NovelGame>> SearchGames(string name)
         {
-            Query query = new Query()
-                        .From("gamelist")
-                        .WhereLike("gamename", $"%{name}%")
-                        .OrWhereLike("furigana", $"%{name}%");
-            var document = await NetworkUtil.PostQuery(query, POST_URL);
+            List<NovelGame> games = new List<NovelGame>();
 
-            List<NovelGame> games = ReadGameTable(document);
+            if (this.Cache.isLoaded)
+            {
+                games = this.Cache.FindGamesByName(name, true);
+            }
+            else
+            {
+                Query query = new Query()
+                            .From("gamelist")
+                            .WhereLike("gamename", $"%{name}%")
+                            .OrWhereLike("furigana", $"%{name}%");
+                var document = await NetworkUtil.PostQuery(query, POST_URL);
+
+                games = ReadGameTable(document);
+            }
 
             return games;
         }

@@ -17,6 +17,8 @@ namespace NovelGameLib.CLITool
             Console.WriteLine("タイトルを入力し、ゲームを検索");
             Console.WriteLine("exit でアプリケーションを終了");
 
+            NovelGameAPI api = new NovelGameAPI();
+
             while (true)
             {
                 Console.Write(">> ");
@@ -28,7 +30,6 @@ namespace NovelGameLib.CLITool
                     break;
                 }
 
-                NovelGameAPI api = new NovelGameAPI();
                 List<NovelGame> games = await api.SearchGames(line);
 
                 foreach (NovelGame game in games)
