@@ -27,6 +27,10 @@ namespace NovelGameLib
             this.Cache.isLoaded = true;
         }
 
+        /// <summary>
+        /// ブランドを全て取得する。
+        /// </summary>
+        /// <returns>ブランドのリスト。</returns>
         public async Task<List<Brand>> GetAllBrands()
         {
             if (this.Cache.isLoaded)
@@ -41,6 +45,11 @@ namespace NovelGameLib
             return brands;
         }
 
+        /// <summary>
+        /// ブランド名でブランドを検索する。
+        /// </summary>
+        /// <param name="name">ブランド名</param>
+        /// <returns>ブランド。ブランドが存在しないとき <see langword="null"/> 。</returns>
         public async Task<Brand?> SearchBrandByName(string name)
         {
             List<Brand> brands = new List<Brand>();
@@ -64,6 +73,11 @@ namespace NovelGameLib
             else return brands.First();
         }
 
+        /// <summary>
+        /// ブランドIDでブランドを検索する。
+        /// </summary>
+        /// <param name="id">ブランドID</param>
+        /// <returns>ブランド。ブランドが存在しないとき <see langword="null"/> 。</returns>
         public async Task<Brand?> SearchBrandById(int id)
         {
             List<Brand> brands = new List<Brand>();
@@ -86,6 +100,11 @@ namespace NovelGameLib
             else return brands.First();
         }
 
+        /// <summary>
+        /// ブランド名が部分一致する全てのブランドを検索する。
+        /// </summary>
+        /// <param name="name">ブランド名</param>
+        /// <returns>ブランドのリスト。</returns>
         public async Task<List<Brand>> SearchBrands(string name)
         {
             List<Brand> brands = new List<Brand>();
@@ -108,6 +127,10 @@ namespace NovelGameLib
             return brands;
         }
 
+        /// <summary>
+        /// ノベルゲームを全て取得する。
+        /// </summary>
+        /// <returns>ノベルゲームのリスト。</returns>
         public async Task<List<NovelGame>> GetAllGames()
         {
             if (this.Cache.isLoaded)
@@ -122,6 +145,11 @@ namespace NovelGameLib
             return games;
         }
 
+        /// <summary>
+        /// ゲームタイトルでノベルゲームを検索する。
+        /// </summary>
+        /// <param name="name">ゲームタイトル</param>
+        /// <returns>ノベルゲーム。ゲームが存在しないとき <see langword="null"/> 。</returns>
         public async Task<NovelGame?> SearchGameByName(string name)
         {
             List<NovelGame> games = new List<NovelGame>();
@@ -145,6 +173,11 @@ namespace NovelGameLib
             else return games.First();
         }
 
+        /// <summary>
+        /// ゲームIDでノベルゲームを検索する。
+        /// </summary>
+        /// <param name="id">ゲームID</param>
+        /// <returns>ノベルゲーム。ゲームが存在しないとき <see langword="null"/> 。</returns>
         public async Task<NovelGame?> SearchGameById(int id)
         {
             List<NovelGame> games = new List<NovelGame>();
@@ -167,6 +200,11 @@ namespace NovelGameLib
             else return games.First();
         }
 
+        /// <summary>
+        /// ゲームタイトルが部分一致する全てのノベルゲームを検索する。
+        /// </summary>
+        /// <param name="name">ゲームタイトル</param>
+        /// <returns>ノベルゲームのリスト。</returns>
         public async Task<List<NovelGame>> SearchGames(string name)
         {
             List<NovelGame> games = new List<NovelGame>();
