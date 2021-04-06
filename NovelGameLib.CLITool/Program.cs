@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using NovelGameLib.Entity;
+using NovelGameLib.Database;
 
 namespace NovelGameLib.CLITool
 {
@@ -17,7 +18,7 @@ namespace NovelGameLib.CLITool
             Console.WriteLine("タイトルを入力し、ゲームを検索");
             Console.WriteLine("exit でアプリケーションを終了");
 
-            NovelGameAPI api = new NovelGameAPI();
+            NovelGameAPI api = new NovelGameAPI(new ErogameScapeDatabase());
 
             while (true)
             {

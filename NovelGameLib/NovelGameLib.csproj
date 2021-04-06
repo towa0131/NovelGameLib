@@ -9,6 +9,7 @@
     <RepositoryUrl>https://github.com/towa0131/NovelGameLib</RepositoryUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <LangVersion>8.0</LangVersion>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

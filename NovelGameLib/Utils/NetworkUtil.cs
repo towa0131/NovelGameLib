@@ -7,7 +7,7 @@ using SqlKata.Compilers;
 using AngleSharp.Html.Parser;
 using AngleSharp.Html.Dom;
 
-namespace NovelGameLib
+namespace NovelGameLib.Utils
 {
     static class NetworkUtil
     {
