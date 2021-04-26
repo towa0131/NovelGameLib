@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Data.SQLite;
 using SqlKata;
+using SqlKata.Execution;
+using SqlKata.Compilers;
 using AngleSharp.Html.Dom;
 using NovelGameLib.Entity;
 using NovelGameLib.Utils;
 
 namespace NovelGameLib.Database
 {
-    public class ErogameScapeDatabase : IDatabase
+    public class ErogameScapeDatabase : IDatabase, IExportableDatabase
     {
         private const string POST_URL = "https://erogamescape.dyndns.org/~ap2/ero/toukei_kaiseki/sql_for_erogamer_form.php";
 
@@ -107,6 +110,70 @@ namespace NovelGameLib.Database
             List<NovelGame> games = ReadGameTable(document);
 
             return games;
+        }
+
+        public async Task<bool> ExportToSQLite3(string path)
+        {
+            List<Brand> brands = await this.GetAllBrands();
+            List<NovelGame> games = await this.GetAllGames();
+
+            var connectionstring = new SQLiteConnectionStringBuilder
+            {
+                DataSource = path
+            };
+
+            SQLiteConnection connection = new SQLiteConnection(connectionstring.ToString());
+            SqliteCompiler compiler = new SqliteCompiler();
+
+            connection.Open();
+
+            QueryFactory db = new QueryFactory(connection, compiler);
+
+            SQLiteCommand command = new SQLiteCommand(connection);
+
+            command.CommandText = "CREATE TABLE IF NOT EXISTS games(" +
+                "Id INTEGER, " +
+                "Title TEXT, " +
+                "Kana TEXT, " +
+                "SellDay TIMESTAMP, " +
+                "BrandId INTEGER, " +
+                "Median INTEGER, " +
+                "Stdev INTEGER, " +
+                "Getchu INTEGER, " +
+                "OHP TEXT, " +
+                "Model TEXT, " +
+                "Rating INTEGER, " +
+                "Gyutto INTEGER, " +
+                "Fanza TEXT)";
+            command.ExecuteNonQuery();
+
+            command.CommandText = "CREATE TABLE IF NOT EXISTS brands(" +
+                "Id INTEGER, " +
+                "Name TEXT, " +
+                "Kana TEXT, " +
+                "Maker TEXT, " +
+                "MakerKana TEXT, " +
+                "Url TEXT, " +
+                "Kind INTEGER, " +
+                "Lost INTEGER, " +
+                "DirectLink INTEGER, " +
+                "Median INTEGER, " +
+                "Twitter TEXT)";
+            command.ExecuteNonQuery();
+
+            foreach (NovelGame game in games)
+            {
+                int affected = db.Query("games").Insert(game);
+                if (!Convert.ToBoolean(affected)) return false;
+            }
+
+            foreach(Brand brand in brands)
+            {
+                int affected = db.Query("brands").Insert(brand);
+                if (!Convert.ToBoolean(affected)) return false;
+            }
+
+            return true;
         }
 
         private List<Brand> ReadBrandTable(IHtmlDocument document)
