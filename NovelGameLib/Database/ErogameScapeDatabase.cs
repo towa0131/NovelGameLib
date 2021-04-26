@@ -186,16 +186,16 @@ namespace NovelGameLib.Database
 
                     Brand brand = new Brand()
                     {
-                        Id = IElementParser.ParseInt(td[0]),
+                        Id = ElementParser.ParseInt(td[0]),
                         Name = td[1].TextContent,
                         Kana = td[2].TextContent,
                         Maker = td[3].TextContent,
                         MakerKana = td[4].TextContent,
                         Url = td[5].TextContent,
                         Kind = td[7].TextContent == "CORPORATION" ? MakerType.CORPORATION : MakerType.CIRCLE,
-                        Lost = IElementParser.ParseBool(td[8]),
-                        DirectLink = IElementParser.ParseBool(td[9]),
-                        Median = IElementParser.ParseInt(td[10]),
+                        Lost = ElementParser.ParseBool(td[8]),
+                        DirectLink = ElementParser.ParseBool(td[9]),
+                        Median = ElementParser.ParseInt(td[10]),
                         Twitter = td[12].TextContent
                     };
 
@@ -215,18 +215,18 @@ namespace NovelGameLib.Database
 
                     NovelGame game = new NovelGame()
                     {
-                        Id = IElementParser.ParseInt(td[0]),
+                        Id = ElementParser.ParseInt(td[0]),
                         Title = td[1].TextContent,
                         Kana = td[2].TextContent,
                         SellDay = DateTime.Parse(td[3].TextContent),
-                        BrandId = IElementParser.ParseInt(td[4]),
-                        Median = IElementParser.ParseInt(td[5]),
-                        Stdev = IElementParser.ParseInt(td[6]),
-                        Getchu = IElementParser.ParseInt(td[14]),
+                        BrandId = ElementParser.ParseInt(td[4]),
+                        Median = ElementParser.ParseInt(td[5]),
+                        Stdev = ElementParser.ParseInt(td[6]),
+                        Getchu = ElementParser.ParseInt(td[14]),
                         OHP = td[15].TextContent,
                         Model = td[16].TextContent,
-                        Rating = IElementParser.ParseBool(td[18]),
-                        Gyutto = IElementParser.ParseInt(td[26]),
+                        Rating = ElementParser.ParseBool(td[18]),
+                        Gyutto = ElementParser.ParseInt(td[26]),
                         Fanza = td[27].TextContent
                     };
 

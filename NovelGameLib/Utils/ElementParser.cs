@@ -4,7 +4,7 @@ using AngleSharp.Dom;
 
 namespace NovelGameLib.Utils
 {
-    static class IElementParser
+    static class ElementParser
     {
         public static int? ParseInt(IElement element)
         {
