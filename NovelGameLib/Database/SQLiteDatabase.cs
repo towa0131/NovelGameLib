@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
+using System.IO;
 using SqlKata;
 using SqlKata.Execution;
 using SqlKata.Compilers;
@@ -18,6 +19,11 @@ namespace NovelGameLib.Database
 
         public SQLiteDatabase(string path)
         {
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException(path);
+            }
+
             var connectionstring = new SQLiteConnectionStringBuilder
             {
                 DataSource = path
@@ -112,6 +118,5 @@ namespace NovelGameLib.Database
 
             return games;
         }
-
     }
 }
