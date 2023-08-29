@@ -18,10 +18,11 @@ namespace NovelGameLib.Database
 
         public async Task<List<Brand>> GetAllBrands()
         {
-            var document = await NetworkUtil.PostQuery(new Query().From("brandlist"), POST_URL);
-            List<Brand> brands = ReadBrandTable(document);
-
-            return brands;
+            using (var document = await NetworkUtil.PostQuery(new Query().From("brandlist"), POST_URL))
+            {
+                List<Brand> brands = ReadBrandTable(document);
+                return brands;
+            }
         }
 
         public async Task<Brand?> SearchBrandByName(string name)
@@ -66,10 +67,11 @@ namespace NovelGameLib.Database
 
         public async Task<List<NovelGame>> GetAllGames()
         {
-            var document = await NetworkUtil.PostQuery(new Query().From("gamelist"), POST_URL);
-            List<NovelGame> games = ReadGameTable(document);
-
-            return games;
+            using (var document = await NetworkUtil.PostQuery(new Query().From("gamelist"), POST_URL))
+            {
+                List<NovelGame> games = ReadGameTable(document);
+                return games;
+            }
         }
 
         public async Task<NovelGame?> SearchGameByName(string name)
@@ -164,14 +166,24 @@ namespace NovelGameLib.Database
             foreach (NovelGame game in games)
             {
                 int affected = db.Query("games").Insert(game);
-                if (!Convert.ToBoolean(affected)) return false;
+                if (!Convert.ToBoolean(affected))
+                {
+                    GC.Collect();
+                    return false;
+                }
             }
 
             foreach(Brand brand in brands)
             {
                 int affected = db.Query("brands").Insert(brand);
-                if (!Convert.ToBoolean(affected)) return false;
+                if (!Convert.ToBoolean(affected))
+                {
+                    GC.Collect();
+                    return false;
+                }
             }
+
+            GC.Collect();
 
             return true;
         }
